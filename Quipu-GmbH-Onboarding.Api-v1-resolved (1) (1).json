@@ -1,0 +1,1804 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "main Onboarding.Api(orchestrator)",
+    "description": "This is an example of using OAuth2 Password Flow in a specification to describe security to your API.",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://{server}/v1",
+      "variables": {
+        "server": {
+          "default": "digitalchannels.qmw-test.quipu.de/api/"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "password": [
+        "api-full"
+      ]
+    }
+  ],
+  "paths": {
+    "/SignPhone": {
+      "post": {
+        "tags": [
+          "ProcessManagementController"
+        ],
+        "summary": "Initiate mtan flow to sign the phone number",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignPhoneRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignPhoneResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Start": {
+      "post": {
+        "tags": [
+          "ProcessManagementController"
+        ],
+        "summary": "endpoint for checking that user with specified phone number doesn't have an account already",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "DeviceId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "DevicePlatform",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhoneCheckRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhoneCheckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PhoneConfirmation": {
+      "post": {
+        "tags": [
+          "ProcessManagementController"
+        ],
+        "summary": "endpoint for phone confirmation using 2nd factor",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhoneConfirmationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/EverGreenRequest": {
+      "post": {
+        "tags": [
+          "ProcessManagementController"
+        ],
+        "summary": "endpoint for submit EverGreen requestId",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "EverGreenRequestId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/SubmitStepForm": {
+      "post": {
+        "tags": [
+          "ProcessManagementController"
+        ],
+        "summary": "enpoint for sending filled form",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitFormRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FromValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Abort": {
+      "post": {
+        "tags": [
+          "ProcessManagementController"
+        ],
+        "summary": "enpoint for process abort",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accept"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/Sign": {
+      "post": {
+        "tags": [
+          "ProcessManagementController"
+        ],
+        "summary": "start sign process",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accept"
+          },
+          "422": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/Document": {
+      "get": {
+        "tags": [
+          "QueryController"
+        ],
+        "summary": "Get document for signing",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentQueryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WizardStep/{stepName}": {
+      "get": {
+        "tags": [
+          "QueryController"
+        ],
+        "summary": "Get fields for given step",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "stepName",
+            "in": "path",
+            "description": "Number of contract to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WizzardStepResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FromValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Reference/{code}": {
+      "get": {
+        "tags": [
+          "QueryController"
+        ],
+        "summary": "Get reference by code",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "Reference code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reference"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Status": {
+      "get": {
+        "tags": [
+          "QueryController"
+        ],
+        "summary": "process status",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProcessId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ping": {
+      "get": {
+        "summary": "Server heartbeat operation",
+        "description": "ping pong",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/admin/onboarding/list": {
+      "post": {
+        "tags": [
+          "Onboarding"
+        ],
+        "summary": "List onboarding processes",
+        "operationId": "ListOnboarding",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnboardingListRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Paginated list of onboarding processes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FromValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/onboarding/{id}": {
+      "get": {
+        "tags": [
+          "Onboarding"
+        ],
+        "summary": "Get onboarding process by ID",
+        "operationId": "GetOnboardingById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "MongoDB ObjectId as a string.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Onboarding process details (redacted where necessary).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FromValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/onboarding/metrics/daily": {
+      "post": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Processes per day",
+        "operationId": "GetDailyMetrics",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyMetricsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Daily counts within range.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyMetricsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FromValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/onboarding/metrics/outcomes": {
+      "post": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Outcomes (success vs failed vs in progress)",
+        "operationId": "GetOutcomeMetrics",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutcomesMetricsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Aggregated outcomes in the range.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutcomesMetricsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FromValidationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DocumentQueryResponse": {
+        "type": "object",
+        "properties": {
+          "FileContent": {
+            "type": "string",
+            "description": "Base64-encoded contents of the file",
+            "format": "base64"
+          },
+          "OriginalFileName": {
+            "type": "string"
+          }
+        }
+      },
+      "SubmitFormRequest": {
+        "type": "object",
+        "properties": {
+          "Step": {
+            "type": "string"
+          },
+          "FormValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "fieild1": "value1",
+              "field2": "value2"
+            }
+          }
+        }
+      },
+      "PhoneCheckRequest": {
+        "type": "object",
+        "properties": {
+          "PhoneNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "PhoneCheckResponse": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "string",
+            "enum": [
+              "Success",
+              "MultiplePhoneNumberOccurence",
+              "InvalidContractType",
+              "IncidentsIssueFound"
+            ]
+          }
+        }
+      },
+      "PhoneConfirmationRequest": {
+        "type": "object",
+        "properties": {
+          "PhoneNumber": {
+            "type": "string"
+          },
+          "Signature": {
+            "$ref": "#/components/schemas/Signature"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "string",
+        "description": "Error Code description: |200 DocumentExpired |210 Under18YearsOld |220 NoResidenceInformation |230 BlockedByIncidentsIssue |240 DiiaDocumentReceiveError |250 AlreadyBankClient |260 LivenessResultFalse |270 BannedByLiveness |280 RegistrationClientError |290 GetAgreementError |300 SignAgreementError  |310 Phone Signature Invalid |320 Phone Signature Expired    |330 Phone Signature AlreadyValidated |340 Phone Signature Error     |350 Phone Signature MaxNumberFailedAttempts             |999 Generic error\n",
+        "enum": [
+          "200",
+          "210",
+          "220",
+          "230",
+          "240",
+          "250",
+          "260",
+          "270",
+          "280",
+          "290",
+          "300",
+          "310",
+          "320",
+          "330",
+          "340",
+          "350",
+          "999"
+        ]
+      },
+      "ValidationResult": {
+        "type": "object",
+        "properties": {
+          "ErrorCode": {
+            "$ref": "#/components/schemas/ValidationError"
+          },
+          "Message": {
+            "type": "string",
+            "description": "localized message"
+          },
+          "FieldName": {
+            "type": "string"
+          }
+        },
+        "description": "error code and user-friendly message"
+      },
+      "FromValidationResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "localized message"
+          },
+          "fieldsValidationResult": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldValidationResult"
+            }
+          }
+        },
+        "description": "represents result of validation"
+      },
+      "FieldValidationResult": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string",
+            "description": "reference to field that is being validated"
+          },
+          "messageText": {
+            "type": "string",
+            "description": "text to be shown to the user"
+          }
+        },
+        "description": "validation result per field"
+      },
+      "ProcessStatusResponse": {
+        "required": [
+          "CurrentStep",
+          "Status"
+        ],
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "string",
+            "enum": [
+              "NotStarted",
+              "Busy",
+              "WaitingForInput",
+              "Failed",
+              "Finished",
+              "TemporalBan",
+              "Aborted"
+            ]
+          },
+          "CurrentStep": {
+            "type": "string"
+          },
+          "NextStep": {
+            "type": "string"
+          },
+          "ValidationError": {
+            "$ref": "#/components/schemas/ValidationResult"
+          }
+        },
+        "description": "status of current on-boarding process"
+      },
+      "WizzardStepResponse": {
+        "required": [
+          "body"
+        ],
+        "type": "object",
+        "properties": {
+          "Header": {
+            "$ref": "#/components/schemas/Header"
+          },
+          "Body": {
+            "$ref": "#/components/schemas/Body"
+          },
+          "Footer": {
+            "$ref": "#/components/schemas/Footer"
+          },
+          "FieldsData": {
+            "type": "object",
+            "description": "saved object for given step"
+          }
+        },
+        "description": "fields defintion and saved values, if any"
+      },
+      "Footer": {
+        "type": "object",
+        "properties": {
+          "MandatoryFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldMetaData"
+            }
+          },
+          "OptionalFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldMetaData"
+            }
+          }
+        }
+      },
+      "Body": {
+        "type": "object",
+        "properties": {
+          "MandatoryFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldMetaData"
+            }
+          },
+          "OptionalFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldMetaData"
+            }
+          }
+        }
+      },
+      "FieldMetaData": {
+        "required": [
+          "dataType",
+          "fieldName"
+        ],
+        "type": "object",
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "description": "repesents type of the field",
+            "enum": [
+              "int",
+              "money",
+              "string",
+              "date",
+              "binary",
+              "bool",
+              "object"
+            ]
+          },
+          "fieldName": {
+            "type": "string",
+            "description": "name of the field, must be unique for FieldsDefinition instance"
+          },
+          "fieldGroup": {
+            "type": "string",
+            "description": "to have possibility of grouping on UI side, depending on UI representation - tab\\page\\groupbox etc."
+          },
+          "fieldOrder": {
+            "type": "string",
+            "description": "to be used to show fields in certain order",
+            "format": "int",
+            "default": "0"
+          },
+          "fieldLabel": {
+            "type": "array",
+            "description": "array of localizations to be used as label for user",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "description": "list of additional string tags to describe special behaviour, in case of need. Could be used to by UI side to attach special UI controls - file uploader and etc.",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "image": {
+            "type": "string"
+          },
+          "refValuesCode": {
+            "type": "string",
+            "description": "if present, the field should be show as combobox with ReferenceValue as items"
+          },
+          "fieldUIType": {
+            "type": "string",
+            "description": "additional information about UI control to be used for rendering"
+          },
+          "tooltip": {
+            "$ref": "#/components/schemas/Tooltip"
+          },
+          "placeholder": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "validators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldValidator"
+            }
+          }
+        },
+        "description": "describes one field, how to show and validate it on UI side"
+      },
+      "Tooltip": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "description": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          }
+        }
+      },
+      "Reference": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDefinition"
+            }
+          }
+        }
+      },
+      "ReferenceDefinition": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "integer"
+          },
+          "refValue": {
+            "type": "string"
+          },
+          "extCode": {
+            "type": "string",
+            "description": "code in external system to be used for mapping"
+          },
+          "localizations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "hintCode": {
+            "type": "array",
+            "description": "localizable markup or text to show as hint on UI side",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "hintDescription": {
+            "type": "array",
+            "description": "localizable markup or text to show as hint on UI side",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "validators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefValidator"
+            }
+          }
+        }
+      },
+      "RefValidator": {
+        "type": "object",
+        "properties": {
+          "validatorText": {
+            "type": "string"
+          },
+          "validatorEngine": {
+            "type": "string"
+          },
+          "validatorType": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "message": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          }
+        }
+      },
+      "NotifyClient": {
+        "required": [
+          "CaseStatus",
+          "ProcessId"
+        ],
+        "type": "object",
+        "properties": {
+          "ProcessId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Message": {
+            "type": "string"
+          },
+          "CaseStatus": {
+            "type": "string",
+            "enum": [
+              "None",
+              "Sucess",
+              "Fail"
+            ]
+          }
+        },
+        "description": "command for client notification about error or success"
+      },
+      "SignPhoneRequest": {
+        "required": [
+          "Payload",
+          "RefId",
+          "SignatureId"
+        ],
+        "type": "object",
+        "properties": {
+          "RefId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Payload": {
+            "type": "object"
+          },
+          "SignatureId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "SignPhoneResponse": {
+        "required": [
+          "SignatureId"
+        ],
+        "type": "object",
+        "properties": {
+          "SignatureId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Signature": {
+        "required": [
+          "Eval",
+          "SignatureId"
+        ],
+        "type": "object",
+        "properties": {
+          "SignatureId": {
+            "type": "string",
+            "description": "Unique id for singature process",
+            "format": "uuid"
+          },
+          "Eval": {
+            "type": "string",
+            "format": "byte"
+          }
+        },
+        "description": "defines method and signature"
+      },
+      "OnboardingListRequest": {
+        "required": [
+          "OrderBy",
+          "Page",
+          "PageSize"
+        ],
+        "type": "object",
+        "properties": {
+          "OrderBy": {
+            "type": "string",
+            "default": "CreatedDesc",
+            "enum": [
+              "CreatedDesc",
+              "CreatedAsc",
+              "StatusAsc",
+              "StatusDesc",
+              "RetriesDesc",
+              "RetriesAsc"
+            ]
+          },
+          "Filters": {
+            "$ref": "#/components/schemas/OnboardingFilters"
+          },
+          "MinCreationDate": {
+            "type": "string",
+            "description": "Inclusive UTC lower bound for CreationDate.",
+            "format": "date-time"
+          },
+          "MaxCreationDate": {
+            "type": "string",
+            "description": "Inclusive UTC upper bound for CreationDate.",
+            "format": "date-time"
+          },
+          "Page": {
+            "minimum": 1,
+            "type": "integer",
+            "default": 1
+          },
+          "PageSize": {
+            "type": "integer",
+            "default": 25,
+            "enum": [
+              10,
+              25,
+              50
+            ]
+          }
+        },
+        "description": "Paginator-style request for listing onboarding processes."
+      },
+      "OnboardingFilters": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "string",
+            "default": "all",
+            "enum": [
+              "success",
+              "failed",
+              "inprogress",
+              "all"
+            ]
+          },
+          "IncludeTest": {
+            "type": "boolean",
+            "description": "Include processes where IsTestMode=true.",
+            "default": true
+          },
+          "State": {
+            "type": "string",
+            "description": "Exact match on CurrentState."
+          },
+          "DevicePlatform": {
+            "type": "integer",
+            "description": "1=Android, 2=iOS (extensible)."
+          },
+          "PhoneContains": {
+            "type": "string",
+            "description": "Optional substring match for PhoneNumber (admin-permitted use only)."
+          }
+        }
+      },
+      "OnboardingListResponse": {
+        "required": [
+          "Items",
+          "Page",
+          "PageSize",
+          "Total"
+        ],
+        "type": "object",
+        "properties": {
+          "Items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessItem"
+            }
+          },
+          "Page": {
+            "type": "integer"
+          },
+          "PageSize": {
+            "type": "integer"
+          },
+          "Total": {
+            "type": "integer"
+          }
+        }
+      },
+      "ProcessItem": {
+        "required": [
+          "CreatedAt",
+          "Id",
+          "Status"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "Mongo ObjectId as string."
+          },
+          "Phone": {
+            "type": "string",
+            "description": "Masked in list (e.g., +380*****1263)."
+          },
+          "CurrentState": {
+            "type": "string"
+          },
+          "CurrentFormStep": {
+            "type": "integer"
+          },
+          "Status": {
+            "type": "string",
+            "description": "Derived server-side:\n- failed if (SagaError > 0) or (IsAborting = true)\n- success if OpenedContractNumber != null\n- otherwise inprogress\n",
+            "enum": [
+              "success",
+              "failed",
+              "inprogress"
+            ]
+          },
+          "CreatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Retries": {
+            "type": "integer"
+          },
+          "IsTest": {
+            "type": "boolean"
+          },
+          "DevicePlatform": {
+            "type": "integer",
+            "description": "1=Android, 2=iOS (extensible)."
+          }
+        }
+      },
+      "ProcessDetailResponse": {
+        "required": [
+          "Data"
+        ],
+        "type": "object",
+        "properties": {
+          "Data": {
+            "$ref": "#/components/schemas/ProcessDetail"
+          }
+        }
+      },
+      "ProcessDetail": {
+        "required": [
+          "CreationDate",
+          "Id",
+          "Status"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string"
+          },
+          "CurrentState": {
+            "type": "string"
+          },
+          "PreviousState": {
+            "type": "string"
+          },
+          "CurrentFormStep": {
+            "type": "integer"
+          },
+          "Version": {
+            "type": "integer"
+          },
+          "DeviceId": {
+            "type": "string"
+          },
+          "Phone": {
+            "type": "string"
+          },
+          "DevicePlatform": {
+            "type": "integer"
+          },
+          "CreationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "failed",
+              "inprogress"
+            ]
+          },
+          "OpenedContractNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "FacesCompareFinished": {
+            "type": "boolean"
+          },
+          "AllowMoveBack": {
+            "type": "boolean"
+          },
+          "SagaError": {
+            "type": "integer"
+          },
+          "OperationRetryCount": {
+            "type": "integer"
+          },
+          "IsTestMode": {
+            "type": "boolean"
+          },
+          "IsEditQuestionnaire": {
+            "type": "boolean"
+          },
+          "IsAborting": {
+            "type": "boolean"
+          },
+          "CustomerId": {
+            "type": "integer"
+          },
+          "Raw": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Redacted original document; sensitive fields omitted (e.g., Token)."
+          }
+        }
+      },
+      "DailyMetricsRequest": {
+        "required": [
+          "MaxCreationDate",
+          "MinCreationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "MinCreationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MaxCreationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IncludeTest": {
+            "type": "boolean",
+            "default": true
+          },
+          "State": {
+            "type": "string",
+            "description": "Optional filter to limit counts to a specific CurrentState."
+          }
+        }
+      },
+      "DailyBucket": {
+        "required": [
+          "Count",
+          "Date"
+        ],
+        "type": "object",
+        "properties": {
+          "Date": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "type": "string"
+          },
+          "Count": {
+            "type": "integer"
+          }
+        }
+      },
+      "DailyMetricsResponse": {
+        "required": [
+          "Buckets"
+        ],
+        "type": "object",
+        "properties": {
+          "Buckets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DailyBucket"
+            }
+          }
+        }
+      },
+      "OutcomesMetricsRequest": {
+        "required": [
+          "MaxCreationDate",
+          "MinCreationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "MinCreationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MaxCreationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IncludeTest": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "OutcomesMetricsResponse": {
+        "required": [
+          "Failed",
+          "InProgress",
+          "Success"
+        ],
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "integer"
+          },
+          "Failed": {
+            "type": "integer"
+          },
+          "InProgress": {
+            "type": "integer"
+          }
+        }
+      },
+      "Header": {
+        "required": [
+          "mainTitle"
+        ],
+        "type": "object",
+        "properties": {
+          "mainTitle": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "subTitle": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "description": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "image": {
+            "type": "string"
+          },
+          "progressBar": {
+            "$ref": "#/components/schemas/progressBar"
+          }
+        }
+      },
+      "Localization": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "localeValue": {
+            "type": "string"
+          }
+        },
+        "description": "holds localization in certain language"
+      },
+      "Language": {
+        "required": [
+          "code",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "name of language"
+          },
+          "code": {
+            "type": "string",
+            "description": "unqiue code of the language"
+          }
+        },
+        "description": "represents language"
+      },
+      "progressBar": {
+        "required": [
+          "current",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": "total steps"
+          },
+          "current": {
+            "type": "integer",
+            "description": "currrent step"
+          }
+        },
+        "description": "represents progress bar"
+      },
+      "Tag": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "parentCode": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "description": "generic hierarchical structure to attach additional behaviour, exact usage depends on context"
+      },
+      "FieldValidator": {
+        "required": [
+          "description",
+          "validatorText",
+          "validatorType"
+        ],
+        "type": "object",
+        "properties": {
+          "validatorText": {
+            "type": "string",
+            "description": "code in some dynamic programming language - Python, JavaScript etc. or RegEx expression"
+          },
+          "validatorEngine": {
+            "type": "string",
+            "description": "the script engine to be used for processing of validator text",
+            "enum": [
+              "Python",
+              "JavaScript",
+              "RegEx"
+            ]
+          },
+          "validatorType": {
+            "type": "string",
+            "description": "if validator should warn user or restrict",
+            "enum": [
+              "Warning",
+              "Error"
+            ]
+          },
+          "message": {
+            "type": "array",
+            "description": "message(or localizable markup) to be show for user",
+            "items": {
+              "$ref": "#/components/schemas/Localization"
+            }
+          },
+          "messageUi": {
+            "$ref": "#/components/schemas/LocaleUi"
+          },
+          "description": {
+            "type": "string",
+            "description": "short description what is validator about, for internal use in admin module"
+          }
+        }
+      },
+      "LocaleUi": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "p2": {
+            "$ref": "#/components/schemas/NotifyClient"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "LanguageHeader": {
+        "name": "Accept-Language",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "DeviceIdHeader": {
+        "name": "DeviceId",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "ProcessIdHeader": {
+        "name": "ProcessId",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "EverGreenIdHeader": {
+        "name": "EverGreenRequestId",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "TokenHeader": {
+        "name": "Token",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "DevicePlatformHeader": {
+        "name": "DevicePlatform",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "OnboardingIdParam": {
+        "name": "id",
+        "in": "path",
+        "description": "MongoDB ObjectId as a string.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "securitySchemes": {
+      "password": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "https://identityware-test.azurewebsites.net/connect/authorize",
+            "scopes": {
+              "api-full": "full access to client data api"
+            }
+          }
+        }
+      }
+    }
+  }
+}
